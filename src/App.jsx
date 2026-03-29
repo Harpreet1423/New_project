@@ -11,6 +11,7 @@ import JobListing from "./pages/job-listing";
 import MyJobs from "./pages/my-jobs";
 import SavedJobs from "./pages/saved-jobs.jsx";
 import JobPage from "./pages/job";
+import ResumeRefine from "./pages/resume-refine";
 
 import "./App.css";
 
@@ -67,6 +68,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <JobPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/resume-refine",
+        element: (
+          <ProtectedRoute>
+            <ResumeRefine />
           </ProtectedRoute>
         ),
       },
