@@ -184,56 +184,81 @@ const JobCard = ({
   }, [savedJob]);
 
   return (
-    <Card className="flex flex-col">
+    /* Hover: lift + stronger shadow via the card's transition-all */
+    <Card className="flex flex-col hover:-translate-y-1 hover:shadow-xl hover:border-border/80">
       {loadingDeleteJob && (
         <BarLoader className="mt-4" width={"100%"} color="#36d7b7" />
       )}
 
-      <CardHeader className="flex flex-row justify-between items-start">
-        <CardTitle className="font-bold">{job?.title || "Untitled Job"}</CardTitle>
+      <CardHeader className="flex flex-row justify-between items-start gap-2">
+        <div className="flex flex-col gap-2 min-w-0">
+          <CardTitle className="font-bold text-base leading-snug line-clamp-2">
+            {job?.title || "Untitled Job"}
+          </CardTitle>
+          {/* Open/Closed badge using global utility classes from index.css */}
+          {job?.isOpen !== undefined && (
+            <span className={job.isOpen ? "badge-open w-fit" : "badge-closed w-fit"}>
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-current" />
+              {job.isOpen ? "Open" : "Closed"}
+            </span>
+          )}
+        </div>
 
         {isMyJob && (
           <Trash2Icon
             fill="red"
             size={18}
-            className="text-red-300 cursor-pointer"
+            className="text-red-400 cursor-pointer shrink-0 hover:text-red-300 transition-colors mt-0.5"
             onClick={handleDeleteJob}
           />
         )}
       </CardHeader>
-      
+
       <CardContent className="flex flex-col gap-4 flex-1">
-        <div className="flex justify-between">
+        {/* Company logo + location row */}
+        <div className="flex items-center justify-between gap-2">
           {job?.company?.logo_url && (
-            <img src={job.company.logo_url} className="h-6" alt="Company logo" />
+            <img
+              src={job.company.logo_url}
+              className="h-6 object-contain"
+              alt={job?.company?.name || "Company logo"}
+            />
           )}
-          <div className="flex gap-2 items-center">
-            <MapPinIcon size={15} /> {job?.location || "Location not specified"}
+          <div className="flex gap-1.5 items-center text-sm text-muted-foreground ml-auto">
+            <MapPinIcon size={13} />
+            <span className="truncate max-w-32">{job?.location || "Unspecified"}</span>
           </div>
         </div>
-        <hr />
-        {job?.description && job.description.length > 150
-          ? job.description.slice(0, 150) + "..."
-          : job?.description || "No description available"}
+
+        <hr className="border-border/40" />
+
+        {/* Description preview */}
+        <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
+          {job?.description
+            ? job.description.length > 150
+              ? job.description.slice(0, 150) + "..."
+              : job.description
+            : "No description available"}
+        </p>
       </CardContent>
-      
-      <CardFooter className="flex gap-2">
+
+      <CardFooter className="flex gap-2 pt-2">
         <Link to={`/job/${job.id}`} className="flex-1">
-          <Button variant="secondary" className="w-full">
+          <Button variant="secondary" className="w-full text-sm hover:bg-secondary/80 transition-colors">
             More Details
           </Button>
         </Link>
         {!isMyJob && (
           <Button
             variant="outline"
-            className="w-15"
+            className="px-3 shrink-0 hover:bg-red-500/10 hover:border-red-500/30 transition-colors"
             onClick={handleSaveJob}
             disabled={loadingSavedJob}
           >
             {saved ? (
-              <Heart size={20} fill="red" stroke="red" />
+              <Heart size={18} fill="rgb(239 68 68)" stroke="rgb(239 68 68)" />
             ) : (
-              <Heart size={20} />
+              <Heart size={18} className="text-muted-foreground" />
             )}
           </Button>
         )}

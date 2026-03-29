@@ -120,10 +120,52 @@
 }
 
 @layer utilities {
+  /* Gradient title — silver metallic for dark-first theme */
   .gradient-title {
-    @apply bg-gradient-to-br from-gray-500 via-gray-200 to-white text-transparent bg-clip-text;
+    @apply bg-gradient-to-b from-white via-gray-200 to-gray-500 text-transparent bg-clip-text;
   }
+
+  /* ── Open/Closed job status badges ── */
+  .badge-open {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium
+           bg-emerald-500/10 text-emerald-400 border border-emerald-500/20;
+  }
+  .badge-closed {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium
+           bg-red-500/10 text-red-400 border border-red-500/20;
+  }
+
+  /* ── Application status badges ── */
+  .status-applied      { @apply bg-blue-500/10   text-blue-400   border-blue-500/20;   }
+  .status-interviewing { @apply bg-amber-500/10  text-amber-400  border-amber-500/20;  }
+  .status-hired        { @apply bg-emerald-500/10 text-emerald-400 border-emerald-500/20; }
+  .status-rejected     { @apply bg-red-500/10    text-red-400    border-red-500/20;     }
 }
+
+/* ── Skeleton loading shimmer ── */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+
+.skeleton {
+  /* Uses CSS vars so it matches the dark theme automatically */
+  background: linear-gradient(
+    90deg,
+    oklch(0.18 0.04 265 / 1)    0%,
+    oklch(0.28 0.04 263 / 1)   50%,
+    oklch(0.18 0.04 265 / 1)  100%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+/* ── Thin dark-themed scrollbar ── */
+::-webkit-scrollbar               { width: 5px; height: 5px; }
+::-webkit-scrollbar-track         { background: transparent; }
+::-webkit-scrollbar-thumb         { background: oklch(0.38 0.04 260 / 0.6); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover   { background: oklch(0.50 0.05 260 / 0.8); }
 
 .markdown-body {
   background: transparent !important;

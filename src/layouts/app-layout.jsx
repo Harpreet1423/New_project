@@ -28,23 +28,23 @@ const AppLayout = () => {
       {/* Background Grid */}
       <div className="grid-background fixed inset-0 -z-10"></div>
 
-      {/* Header wrapped in container for alignment */}
-      <header className="w-full">
-        <div className="container mx-auto px-4">
+      {/* Sticky header with blur backdrop — stays above content on scroll */}
+      <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-background/75 border-b border-border/40 shadow-sm">
+        <div className="container mx-auto px-4 sm:px-6">
           <Header />
         </div>
       </header>
 
       {/* Main Content */}
       <main className="flex-1">
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 sm:px-6 py-8">
           <Outlet />
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="p-6 text-center bg-gray-800 text-white">
-        Made by Harpreet
+      {/* Footer — minimal, matches dark theme */}
+      <footer className="border-t border-border/30 py-5 text-center text-sm text-muted-foreground bg-background/60 backdrop-blur-sm">
+        Made with <span className="text-red-400 text-base">♥</span> by Harpreet
       </footer>
     </div>
   );

@@ -87,13 +87,16 @@ const PostJob = () => {
   }
 
   return (
-    <div>
-      <h1 className="gradient-title font-extrabold text-5xl sm:text-7xl text-center pb-8">
+    <div className="max-w-3xl mx-auto">
+      <h1 className="gradient-title font-extrabold text-5xl sm:text-7xl text-center pb-8 tracking-tight">
         Post a Job
       </h1>
+
+      {/* Form card container for better visual grouping */}
+      <div className="rounded-2xl border border-border/50 bg-card/50 p-6 shadow-sm backdrop-blur-sm">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 p-4 pb-0"
+        className="flex flex-col gap-4"
       >
         <Input placeholder="Job Title" {...register("title")} />
         {errors.title && <p className="text-red-500">{errors.title.message}</p>}
@@ -176,10 +179,11 @@ const PostJob = () => {
           <p className="text-red-500">{errorCreateJob?.message}</p>
         )}
         {loadingCreateJob && <BarLoader width={"100%"} color="#36d7b7" />}
-        <Button type="submit" variant="blue" size="lg" className="mt-2">
-          Submit
+        <Button type="submit" variant="blue" size="lg" className="mt-2 w-full">
+          Submit Job
         </Button>
       </form>
+      </div>
     </div>
   );
 };

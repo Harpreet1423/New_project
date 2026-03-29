@@ -1,24 +1,23 @@
-.grid-background{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-     background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0.1) 1px,
-      transparent 1px);
-    background-size: 50px 50px;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.grid-background::before {
-  content: "";
-  position: absolute;
+/* ── Subtle two-direction grid overlay for dark background ── */
+.grid-background {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, transparent, rgba(0, 0, 0, 0.9));
+  /* Vertical + horizontal lines at reduced opacity for refinement */
+  background-image:
+    linear-gradient(to right,  rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Radial vignette: dark edges keep focus on content */
+.grid-background::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, transparent 30%, rgba(0, 0, 0, 0.88));
 }

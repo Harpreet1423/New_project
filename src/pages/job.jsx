@@ -54,42 +54,50 @@ const JobPage = () => {
 
   return (
     <div className="flex flex-col gap-8 mt-5">
-      <div className="flex flex-col-reverse gap-6 md:flex-row justify-between items-center">
-        <h1 className="gradient-title font-extrabold pb-3 text-4xl sm:text-6xl">
+
+      {/* ── Header: title + company logo ── */}
+      <div className="flex flex-col-reverse gap-4 md:flex-row justify-between items-start md:items-center">
+        <h1 className="gradient-title font-extrabold text-4xl sm:text-6xl tracking-tight leading-tight">
           {job?.title}
         </h1>
-        <img src={job?.company?.logo_url} className="h-12" alt={job?.title} />
+        {job?.company?.logo_url && (
+          <img
+            src={job.company.logo_url}
+            className="h-14 object-contain rounded-lg border border-border/30 p-1 bg-card"
+            alt={job?.company?.name}
+          />
+        )}
       </div>
 
-      <div className="flex justify-between ">
-        <div className="flex gap-2">
-          <MapPinIcon /> {job?.location}
-        </div>
-        <div className="flex gap-2">
-          <Briefcase /> {job?.applications?.length} Applicants
-        </div>
-        <div className="flex gap-2">
-          {job?.isOpen ? (
-            <>
-              <DoorOpen /> Open
-            </>
-          ) : (
-            <>
-              <DoorClosed /> Closed
-            </>
-          )}
-        </div>
+      {/* ── Meta info pills ── */}
+      <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border/50 bg-secondary/30">
+          <MapPinIcon size={14} />
+          {job?.location}
+        </span>
+        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border/50 bg-secondary/30">
+          <Briefcase size={14} />
+          {job?.applications?.length} Applicant{job?.applications?.length !== 1 ? "s" : ""}
+        </span>
+        {/* Open/Closed badge using global utility classes */}
+        <span className={job?.isOpen ? "badge-open" : "badge-closed"}>
+          {job?.isOpen ? <DoorOpen size={13} /> : <DoorClosed size={13} />}
+          {job?.isOpen ? "Open" : "Closed"}
+        </span>
       </div>
 
+      {/* ── Recruiter hiring-status toggle ── */}
       {job?.recruiter_id === user?.id && (
         <Select onValueChange={handleStatusChange}>
           <SelectTrigger
-            className={`w-full ${job?.isOpen ? "bg-green-950" : "bg-red-950"}`}
+            className={`w-full sm:w-64 font-medium ${
+              job?.isOpen
+                ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400"
+                : "border-red-500/40 bg-red-500/10 text-red-400"
+            }`}
           >
             <SelectValue
-              placeholder={
-                "Hiring Status " + (job?.isOpen ? "( Open )" : "( Closed )")
-              }
+              placeholder={"Hiring Status " + (job?.isOpen ? "(Open)" : "(Closed)")}
             />
           </SelectTrigger>
           <SelectContent>
@@ -99,16 +107,24 @@ const JobPage = () => {
         </Select>
       )}
 
-      <h2 className="text-2xl sm:text-3xl font-bold">About the job</h2>
-      <p className="sm:text-lg">{job?.description}</p>
+      {/* ── About section ── */}
+      <div>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">About the job</h2>
+        <p className="text-muted-foreground sm:text-base leading-relaxed">{job?.description}</p>
+      </div>
 
-      <h2 className="text-2xl sm:text-3xl font-bold">
-        What we are looking for
-      </h2>
-      <MDEditor.Markdown
-        source={job?.requirement}
-        className="bg-transparent sm:text-lg" // add global ul styles - tutorial
-      />
+      <hr className="border-border/30" />
+
+      {/* ── Requirements section ── */}
+      <div>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">What we are looking for</h2>
+        <MDEditor.Markdown
+          source={job?.requirement}
+          className="bg-transparent sm:text-base leading-relaxed"
+        />
+      </div>
+
+      {/* ── Apply button (candidates only) ── */}
       {job?.recruiter_id !== user?.id && (
         <ApplyJobDrawer
           job={job}
@@ -117,15 +133,18 @@ const JobPage = () => {
           applied={job?.applications?.find((ap) => ap.candidate_id === user.id)}
         />
       )}
+
       {loadingHiringStatus && <BarLoader width={"100%"} color="#36d7b7" />}
+
+      {/* ── Applications list (recruiters only) ── */}
       {job?.applications?.length > 0 && job?.recruiter_id === user?.id && (
-        <div className="flex flex-col gap-2">
-          <h2 className="font-bold mb-4 text-xl ml-1">Applications</h2>
-          {job?.applications.map((application) => {
-            return (
-              <ApplicationCard key={application.id} application={application} />
-            );
-          })}
+        <div className="flex flex-col gap-3">
+          <h2 className="font-bold text-xl border-b border-border/30 pb-3">
+            Applications ({job.applications.length})
+          </h2>
+          {job.applications.map((application) => (
+            <ApplicationCard key={application.id} application={application} />
+          ))}
         </div>
       )}
     </div>

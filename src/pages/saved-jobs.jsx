@@ -45,7 +45,12 @@ const SavedJobs = () => {
               );
             })
           ) : (
-            <div>No Saved Jobs 👀</div>
+            /* ── Empty state ── */
+            <div className="col-span-full flex flex-col items-center justify-center py-20 text-center gap-3 text-muted-foreground">
+              <span className="text-5xl">🔖</span>
+              <p className="text-lg font-semibold text-foreground">No saved jobs yet</p>
+              <p className="text-sm max-w-xs">Browse jobs and click the heart icon to save them for later.</p>
+            </div>
           )}
         </div>
       )}

@@ -40,46 +40,59 @@ const ApplicationCard = ({ application, isCandidate = false }) => {
   return (
     <Card>
       {loadingHiringStatus && <BarLoader width={"100%"} color="#36d7b7" />}
+
       <CardHeader>
-        <CardTitle className="flex justify-between font-bold">
-          {isCandidate
-            ? `${application?.job?.title} at ${application?.job?.company?.name}`
-            : application?.name}
+        <CardTitle className="flex justify-between items-start gap-3 font-bold text-base leading-snug">
+          <span className="flex-1">
+            {isCandidate
+              ? `${application?.job?.title} at ${application?.job?.company?.name}`
+              : application?.name}
+          </span>
+          {/* Download resume — subtle circular button */}
           <Download
-            size={18}
-            className="bg-white text-black rounded-full h-8 w-8 p-1.5 cursor-pointer"
+            size={16}
+            className="shrink-0 bg-foreground/10 text-foreground rounded-full h-8 w-8 p-2 cursor-pointer hover:bg-foreground/20 transition-colors"
             onClick={handleDownload}
           />
         </CardTitle>
       </CardHeader>
+
       <CardContent className="flex flex-col gap-4 flex-1">
-        <div className="flex flex-col md:flex-row justify-between">
-          <div className="flex gap-2 items-center">
-            <BriefcaseBusiness size={15} /> {application?.experience} years of
-            experience
-          </div>
-          <div className="flex gap-2 items-center">
-            <School size={15} />
+        {/* Applicant details row */}
+        <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+          <span className="flex gap-1.5 items-center">
+            <BriefcaseBusiness size={13} />
+            {application?.experience} yr{application?.experience !== 1 ? "s" : ""} experience
+          </span>
+          <span className="flex gap-1.5 items-center">
+            <School size={13} />
             {application?.education}
-          </div>
-          <div className="flex gap-2 items-center">
-            <Boxes size={15} /> Skills: {application?.skills}
-          </div>
+          </span>
+          <span className="flex gap-1.5 items-center">
+            <Boxes size={13} />
+            {application?.skills}
+          </span>
         </div>
-        <hr />
+        <hr className="border-border/40" />
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <span>{new Date(application?.created_at).toLocaleString()}</span>
+
+      <CardFooter className="flex flex-wrap justify-between gap-3">
+        <span className="text-xs text-muted-foreground">
+          {new Date(application?.created_at).toLocaleDateString("en-US", {
+            month: "short", day: "numeric", year: "numeric"
+          })}
+        </span>
+
         {isCandidate ? (
-          <span className="capitalize font-bold">
-            Status: {application.status}
+          /* Color-coded status pill based on status value */
+          <span className={`capitalize text-xs font-medium px-3 py-1 rounded-full border inline-flex items-center gap-1
+            status-${application.status}`}>
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-current" />
+            {application.status}
           </span>
         ) : (
-          <Select
-            onValueChange={handleStatusChange}
-            defaultValue={application.status}
-          >
-            <SelectTrigger className="w-52">
+          <Select onValueChange={handleStatusChange} defaultValue={application.status}>
+            <SelectTrigger className="w-44 h-8 text-xs">
               <SelectValue placeholder="Application Status" />
             </SelectTrigger>
             <SelectContent>

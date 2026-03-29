@@ -31,30 +31,37 @@ const Header = () => {
 
   return (
     <>
-      <nav className="py-4 flex justify-between items-center">
-        <Link to="/">
-          <img src="/logoo.png" className="h-10" alt="nextHire Logo" />
+      {/* Nav: logo left, actions right — compact vertical padding so sticky header stays slim */}
+      <nav className="py-3 flex justify-between items-center">
+        <Link to="/" className="flex-shrink-0">
+          <img src="/logoo.png" className="h-9 sm:h-10 object-contain" alt="nextHire Logo" />
         </Link>
 
-        <div className="flex gap-8">
+        <div className="flex items-center gap-3 sm:gap-4">
           <SignedOut>
-            <Button variant="outline" onClick={() => setShowSignIn(true)}>
+            {/* Outlined login button — subtle in dark mode */}
+            <Button
+              variant="outline"
+              className="rounded-full px-5 text-sm font-medium hover:bg-primary/10 transition-colors"
+              onClick={() => setShowSignIn(true)}
+            >
               Login
             </Button>
           </SignedOut>
           <SignedIn>
             {user?.unsafeMetadata?.role === "recruiter" && (
               <Link to="/post-job">
-                <Button variant="destructive" className="rounded-full">
-                  <PenBox size={20} className="mr-2" />
-                  Post a Job
+                {/* Rounded pill CTA visible at all sizes */}
+                <Button variant="destructive" className="rounded-full text-sm gap-1.5 px-4">
+                  <PenBox size={16} />
+                  <span className="hidden sm:inline">Post a Job</span>
                 </Button>
               </Link>
             )}
             <UserButton
               appearance={{
                 elements: {
-                  avatarBox: "w-10 h-10",
+                  avatarBox: "w-9 h-9",
                 },
               }}
             >

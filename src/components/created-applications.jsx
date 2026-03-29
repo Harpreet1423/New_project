@@ -26,16 +26,23 @@ const CreatedApplications = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      {applications?.map((application) => {
-        return (
+    <div className="flex flex-col gap-3">
+      {applications?.length ? (
+        applications.map((application) => (
           <ApplicationCard
             key={application.id}
             application={application}
             isCandidate={true}
           />
-        );
-      })}
+        ))
+      ) : (
+        /* Empty state */
+        <div className="flex flex-col items-center justify-center py-20 text-center gap-3 text-muted-foreground">
+          <span className="text-5xl">📋</span>
+          <p className="text-lg font-semibold text-foreground">No applications yet</p>
+          <p className="text-sm max-w-xs">Start browsing jobs and submit your first application.</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -19,8 +19,8 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
-         blue: 
-         " bg-blue-500 hover:bg-blue-600",
+         /* White text explicitly set — prevents inheritance issues in dark mode */
+         blue: "bg-blue-600 text-white hover:bg-blue-700 shadow-xs",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
