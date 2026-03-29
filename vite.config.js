@@ -28,6 +28,13 @@ export default defineConfig({
   server: {
     host: "0.0.0.0", // Allow external connections
     port: parseInt(process.env.PORT) || 80,
+    proxy: {
+      // Forward /api/* requests to the Express AI backend
+      "/api": {
+        target: "http://localhost:5000",
+        changeOrigin: true,
+      },
+    },
   },
   preview: {
     host: "0.0.0.0",

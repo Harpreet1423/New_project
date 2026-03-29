@@ -8,7 +8,7 @@ import {
   useUser,
 } from "@clerk/clerk-react";
 import { Button } from "./ui/button";
-import { BriefcaseBusiness, Heart, PenBox } from "lucide-react";
+import { BriefcaseBusiness, Heart, PenBox, Sparkles } from "lucide-react";
 
 const Header = () => {
   const [showSignIn, setShowSignIn] = useState(false);
@@ -49,6 +49,12 @@ const Header = () => {
             </Button>
           </SignedOut>
           <SignedIn>
+            <Link to="/resume-refine">
+              <Button variant="outline" className="rounded-full">
+                <Sparkles size={16} className="mr-2" />
+                Refine Resume
+              </Button>
+            </Link>
             {user?.unsafeMetadata?.role === "recruiter" && (
               <Link to="/post-job">
                 {/* Rounded pill CTA visible at all sizes */}
@@ -75,6 +81,11 @@ const Header = () => {
                   label="Saved Jobs"
                   labelIcon={<Heart size={15} />}
                   href="/saved-jobs"
+                />
+                <UserButton.Link
+                  label="Refine Resume"
+                  labelIcon={<Sparkles size={15} />}
+                  href="/resume-refine"
                 />
                 <UserButton.Action label="manageAccount" />
               </UserButton.MenuItems>
